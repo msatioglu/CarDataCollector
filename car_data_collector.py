@@ -94,7 +94,7 @@ def process_url_and_extract_data(ad_url):
 
     elem = browser.find_element_by_tag_name("body")
 
-    no_of_page_downs = 5
+    no_of_page_downs = 8
 
     while no_of_page_downs:
         elem.send_keys(Keys.PAGE_DOWN)
@@ -155,8 +155,15 @@ def collect_ad_urls():
         car_select_counter = car_select_counter + 1
         page_counter = 0
 
+    url_counter = 1
+    url_section_counter = 1
     for ad_url in ad_urls:
         process_url_and_extract_data(ad_url)
+        print("URL" + str(url_counter) + " crawled successfully.")
+        url_counter = url_counter + 1
+        if url_counter % 500 == 0:
+            print("Section " + str(url_section_counter) + " completed successfully.")
+            url_section_counter = url_section_counter + 1
 
 
 collect_ad_urls()
@@ -174,7 +181,7 @@ def write_dict_data_to_csv():
                            "Şehir İçi Yakıt Tüketimi", "Şehir Dışı Yakıt Tüketimi",
                            "Yakıt Deposu", "Uzunluk", "Genişlik", "Yükseklik", "Ağırlık",
                            "Boş Ağırlığı", "Koltuk Sayısı", "Bagaj Hacmi",
-                           "Ön Lastik", "Aks Aralığı"]
+                           "Ön Lastik", "Aks Aralığı", "Ekspertiz sonucu"]
     car_dataset = open("car_dataset.csv", "w", encoding="UTF-8", newline='')
 
     writer = csv.DictWriter(car_dataset, fieldnames=car_dateset_columns)
