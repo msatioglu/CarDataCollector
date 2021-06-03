@@ -119,6 +119,10 @@ def process_url_and_extract_data(ad_url):
     for car_general_info in car_general_info_values_list:
         car_general_info_values.append(car_general_info.text)
 
+    car_price_content_list = html_soup.find_all('p', attrs={'class': 'font-default-plusmore bold ls-03'})
+    for car_price_content in car_price_content_list:
+        car_general_content_dict["Fiyat"] = car_price_content.text.strip()
+
     car_general_info_combined_dict = dict(zip(car_general_info_sections, car_general_info_values))
 
     global car_all_info_combined_dict
@@ -159,11 +163,11 @@ def collect_ad_urls():
     url_section_counter = 1
     for ad_url in ad_urls:
         process_url_and_extract_data(ad_url)
-        print("URL" + str(url_counter) + " crawled successfully.")
-        url_counter = url_counter + 1
         if url_counter % 500 == 0:
             print("Section " + str(url_section_counter) + " completed successfully.")
             url_section_counter = url_section_counter + 1
+        print("URL " + str(url_counter) + " crawled successfully.")
+        url_counter = url_counter + 1
 
 
 collect_ad_urls()
@@ -181,7 +185,7 @@ def write_dict_data_to_csv():
                            "Şehir İçi Yakıt Tüketimi", "Şehir Dışı Yakıt Tüketimi",
                            "Yakıt Deposu", "Uzunluk", "Genişlik", "Yükseklik", "Ağırlık",
                            "Boş Ağırlığı", "Koltuk Sayısı", "Bagaj Hacmi",
-                           "Ön Lastik", "Aks Aralığı", "Ekspertiz sonucu"]
+                           "Ön Lastik", "Aks Aralığı", "Ekspertiz sonucu", "Fiyat"]
     car_dataset = open("car_dataset.csv", "w", encoding="UTF-8", newline='')
 
     writer = csv.DictWriter(car_dataset, fieldnames=car_dateset_columns)
